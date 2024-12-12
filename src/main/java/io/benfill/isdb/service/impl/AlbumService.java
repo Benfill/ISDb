@@ -58,8 +58,8 @@ public class AlbumService implements IAlbumService {
 		album.setArtist(dto.getArtist());
 		album.setYear(dto.getYear());
 
-		Album savedAlbum = repository.save(album);
-		return mapper.entityToDto(savedAlbum);
+		Album updatedAlbum = repository.save(album);
+		return mapper.entityToDto(updatedAlbum);
 	}
 
 	@Override

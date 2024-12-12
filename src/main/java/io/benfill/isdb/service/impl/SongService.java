@@ -58,14 +58,22 @@ public class SongService implements ISongService {
 
 	@Override
 	public SongDtoResp update(SongDtoReq dto, String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Song song = getById(id);
+		Album album = albumService.getById(dto.getAlbumId());
+
+		song.setTitle(dto.getTitle());
+		song.setDuration(dto.getDuration());
+		song.setNumber(dto.getNumber());
+		song.setAlbum(album);
+
+		return mapper.entityToDto(repository.save(song));
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
+		Song song = getById(id);
 
+		repository.delete(song);
 	}
 
 	@Override
