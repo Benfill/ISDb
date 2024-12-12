@@ -11,8 +11,10 @@ import io.benfill.isdb.dto.request.SongDtoReq;
 import io.benfill.isdb.dto.response.SongDtoResp;
 import io.benfill.isdb.exception.ResourceNotFoundException;
 import io.benfill.isdb.mapper.SongMapper;
+import io.benfill.isdb.model.Album;
 import io.benfill.isdb.model.Song;
 import io.benfill.isdb.repository.SongRepository;
+import io.benfill.isdb.service.IAlbumService;
 import io.benfill.isdb.service.ISongService;
 
 @Service
@@ -20,10 +22,14 @@ public class SongService implements ISongService {
 
 	@Autowired
 	private SongRepository repository;
+	@Autowired
 	private SongMapper mapper;
 
+	@Autowired
+	private IAlbumService albumService;
+
 	@Override
-	public Song getById(Long id) {
+	public Song getById(String id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Song not found"));
 	}
 
@@ -36,24 +42,28 @@ public class SongService implements ISongService {
 	}
 
 	@Override
-	public SongDtoResp getDetails(Long id) {
+	public SongDtoResp getDetails(String id) {
 		return mapper.entityToDto(getById(id));
 	}
 
 	@Override
 	public SongDtoResp create(SongDtoReq dto) {
+		Album album = albumService.getById(dto.getAlbumId());
+		Song song = mapper.DtoToentity(dto);
+		song.setAlbum(album);
+
+		Song savedSong = repository.save(song);
+		return mapper.entityToDto(savedSong);
+	}
+
+	@Override
+	public SongDtoResp update(SongDtoReq dto, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SongDtoResp update(SongDtoReq dto, Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		// TODO Auto-generated method stub
 
 	}

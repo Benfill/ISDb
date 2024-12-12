@@ -11,17 +11,17 @@ import io.benfill.isdb.model.Song;
 @Service
 public interface ISongService {
 
-	Song getById(Long id);
+	Song getById(String id);
 
 	List<SongDtoResp> getAll(Integer page);
 
-	SongDtoResp getDetails(Long id);
+	SongDtoResp getDetails(String id);
 
 	SongDtoResp create(SongDtoReq dto);
 
-	SongDtoResp update(SongDtoReq dto, Long id);
+	SongDtoResp update(SongDtoReq dto, String id);
 
-	void delete(Long id);
+	void delete(String id);
 
 	List<SongDtoResp> search(String query, Integer page);
 

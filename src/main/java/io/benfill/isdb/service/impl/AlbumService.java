@@ -27,7 +27,7 @@ public class AlbumService implements IAlbumService {
 	private AlbumMapper mapper;
 
 	@Override
-	public Album getById(long id) {
+	public Album getById(String id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Album not found"));
 	}
 
@@ -40,7 +40,7 @@ public class AlbumService implements IAlbumService {
 	}
 
 	@Override
-	public AlbumDtoResp getDetails(Long id) {
+	public AlbumDtoResp getDetails(String id) {
 		return mapper.entityToDto(getById(id));
 	}
 
@@ -51,7 +51,7 @@ public class AlbumService implements IAlbumService {
 	}
 
 	@Override
-	public AlbumDtoResp update(AlbumDtoReq dto, Long id) {
+	public AlbumDtoResp update(AlbumDtoReq dto, String id) {
 		Album album = getById(id);
 
 		album.setTitle(dto.getTitle());
@@ -63,7 +63,7 @@ public class AlbumService implements IAlbumService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		Album album = getById(id);
 		repository.delete(album);
 	}

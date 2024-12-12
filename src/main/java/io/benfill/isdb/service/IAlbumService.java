@@ -11,17 +11,17 @@ import io.benfill.isdb.model.Album;
 @Service
 public interface IAlbumService {
 
-	Album getById(long id);
+	Album getById(String id);
 
 	List<AlbumDtoResp> getAll(Integer page);
 
-	AlbumDtoResp getDetails(Long id);
+	AlbumDtoResp getDetails(String id);
 
 	AlbumDtoResp create(AlbumDtoReq dto);
 
-	AlbumDtoResp update(AlbumDtoReq dto, Long id);
+	AlbumDtoResp update(AlbumDtoReq dto, String id);
 
-	void delete(Long id);
+	void delete(String id);
 
 	List<AlbumDtoResp> search(String query, String type, Integer page);
 
