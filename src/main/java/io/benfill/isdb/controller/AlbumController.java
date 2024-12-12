@@ -55,4 +55,11 @@ public class AlbumController {
 			@RequestParam(defaultValue = "0", name = "page") Integer page) {
 		return ResponseEntity.ok(service.search(query, type, page));
 	}
+
+	@GetMapping("/user/albums/year")
+	public ResponseEntity<?> sortByYear(@RequestParam(name = "year") Integer year,
+			@RequestParam(defaultValue = "0", name = "page") Integer page) {
+		return ResponseEntity.ok(service.sort(year, page));
+	}
+
 }
