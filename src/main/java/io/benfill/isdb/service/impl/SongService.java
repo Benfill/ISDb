@@ -58,4 +58,15 @@ public class SongService implements ISongService {
 
 	}
 
+	@Override
+	public List<SongDtoResp> search(String query, Integer page) {
+		if (query == null || query.trim().isEmpty()) {
+			throw new IllegalArgumentException("Search query cannot be null or empty");
+		}
+		int size = 3;
+		Pageable pageable = PageRequest.of(page, size);
+		List<Song> songs = repository.findByTitleLike("%" + query + "%", pageable);
+		return mapper.entitiesToDtos(songs);
+	}
+
 }

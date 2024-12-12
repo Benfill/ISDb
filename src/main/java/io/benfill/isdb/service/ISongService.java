@@ -23,4 +23,6 @@ public interface ISongService {
 
 	void delete(Long id);
 
+	List<SongDtoResp> search(String query, Integer page);
+
 }

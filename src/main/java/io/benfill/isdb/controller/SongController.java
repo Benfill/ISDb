@@ -51,4 +51,10 @@ public class SongController {
 		service.delete(id);
 		return ResponseEntity.ok(DeleteResp.builder().message("Song deleted successfully"));
 	}
+
+	@GetMapping("/user/songs/search")
+	public ResponseEntity<?> searchBy(@RequestParam(name = "q") String query,
+			@RequestParam(defaultValue = "0", name = "page") Integer page) {
+		return ResponseEntity.ok(service.search(query, page));
+	}
 }
