@@ -32,7 +32,7 @@ public class SongController {
 	}
 
 	@GetMapping("/user/songs/{id}")
-	public ResponseEntity<?> show(@PathVariable Long id) {
+	public ResponseEntity<?> show(@PathVariable String id) {
 		return ResponseEntity.ok(service.getDetails(id));
 	}
 
@@ -42,12 +42,12 @@ public class SongController {
 	}
 
 	@PutMapping("/admin/songs/{id}")
-	public ResponseEntity<?> update(@RequestBody @Valid SongDtoReq dto, @PathVariable Long id) {
+	public ResponseEntity<?> update(@RequestBody @Valid SongDtoReq dto, @PathVariable String id) {
 		return ResponseEntity.ok(service.update(dto, id));
 	}
 
 	@DeleteMapping("/admin/songs")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable String id) {
 		service.delete(id);
 		return ResponseEntity.ok(DeleteResp.builder().message("Song deleted successfully"));
 	}
