@@ -52,8 +52,14 @@ public class AlbumService implements IAlbumService {
 
 	@Override
 	public AlbumDtoResp update(AlbumDtoReq dto, Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Album album = getById(id);
+
+		album.setTitle(dto.getTitle());
+		album.setArtist(dto.getArtist());
+		album.setYear(dto.getYear());
+
+		Album savedAlbum = repository.save(album);
+		return mapper.entityToDto(savedAlbum);
 	}
 
 	@Override
