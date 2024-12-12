@@ -48,4 +48,11 @@ public class AlbumController {
 		service.delete(id);
 		return ResponseEntity.ok(DeleteResp.builder().message("Album deleted successfully"));
 	}
+
+	@GetMapping("/user/albums/search")
+	public ResponseEntity<?> searchBy(@RequestParam(name = "q") String query,
+			@RequestParam(defaultValue = "title", name = "type") String type,
+			@RequestParam(defaultValue = "0", name = "page") Integer page) {
+		return ResponseEntity.ok(service.search(query, type, page));
+	}
 }

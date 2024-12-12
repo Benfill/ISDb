@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import io.benfill.isdb.dto.request.AlbumDtoReq;
 import io.benfill.isdb.dto.response.AlbumDtoResp;
 import io.benfill.isdb.exception.ResourceNotFoundException;
+import io.benfill.isdb.exception.SearchTypeException;
 import io.benfill.isdb.mapper.AlbumMapper;
 import io.benfill.isdb.model.Album;
 import io.benfill.isdb.repository.AlbumRepository;
@@ -58,6 +59,26 @@ public class AlbumService implements IAlbumService {
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<AlbumDtoResp> search(String query, String type, Integer page) {
+		if (query == null || query.trim().isEmpty()) {
+			throw new IllegalArgumentException("Search query cannot be null or empty");
+		}
+		List<Album> albums = null;
+		int size = 3;
+		Pageable pageable = PageRequest.of(page, size);
+
+		if (type.equalsIgnoreCase("title")) {
+			albums = repository.findByTitleLike("%" + query + "%", pageable);
+		} else if (type.equalsIgnoreCase("artist")) {
+			albums = repository.findByArtistLike("%" + query + "%", pageable);
+		} else {
+			throw new SearchTypeException("type is incorrect");
+		}
+
+		return mapper.entitiesToDtos(albums);
 	}
 
 }
