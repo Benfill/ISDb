@@ -26,7 +26,7 @@ import lombok.Setter;
 public class Album {
 
 	@Id
-	private Long ID;
+	private String ID;
 
 	@NotBlank(message = "Album's title is required")
 	@NotNull(message = "Album's title is required")

@@ -24,7 +24,7 @@ import lombok.Setter;
 @Builder
 public class Song {
 	@Id
-	private Long ID;
+	private String ID;
 
 	@NotBlank(message = "Song's title is required")
 	@NotNull(message = "Song's title is required")

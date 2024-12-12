@@ -1,22 +1,21 @@
 package io.benfill.isdb.dto.response;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import io.benfill.isdb.model.Song;
+import io.benfill.isdb.model.Album;
 import lombok.Data;
 
 @Data
-public class AlbumDtoResp {
-	private String Id;
+public class SongDtoResp {
+	private String ID;
 
 	private String title;
 
-	private String artist;
+	private Integer duration;
 
-	private Integer year;
+	private Integer number;
 
-	private List<Song> songs;
+	private Album album;
 
 	private LocalDateTime createdAt;
 
