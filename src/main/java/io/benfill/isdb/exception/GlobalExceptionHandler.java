@@ -17,4 +17,20 @@ public class GlobalExceptionHandler {
 				.message(exception.getMessage()).status(HttpStatus.NOT_FOUND.value()).time(LocalDate.now()).build();
 		return message;
 	}
+
+	@ExceptionHandler(SearchTypeException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionMessage resourceNotFoundExceptionHandler(SearchTypeException exception) {
+		ExceptionMessage message = ExceptionMessage.builder().error(HttpStatus.BAD_REQUEST.toString())
+				.message(exception.getMessage()).status(HttpStatus.BAD_REQUEST.value()).time(LocalDate.now()).build();
+		return message;
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionMessage resourceNotFoundExceptionHandler(IllegalArgumentException exception) {
+		ExceptionMessage message = ExceptionMessage.builder().error(HttpStatus.BAD_REQUEST.toString())
+				.message(exception.getMessage()).status(HttpStatus.BAD_REQUEST.value()).time(LocalDate.now()).build();
+		return message;
+	}
 }
