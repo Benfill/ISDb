@@ -24,4 +24,6 @@ public interface IAlbumService {
 	void delete(Long id);
 
 	List<AlbumDtoResp> search(String query, String type, Integer page);
+
+	List<AlbumDtoResp> sort(Integer year, Integer page);
 }

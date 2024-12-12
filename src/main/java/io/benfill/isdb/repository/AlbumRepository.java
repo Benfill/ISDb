@@ -11,4 +11,6 @@ public interface AlbumRepository extends MongoRepository<Album, Long> {
 	List<Album> findByTitleLike(String title, Pageable pageable);
 
 	List<Album> findByArtistLike(String artist, Pageable pageable);
+
+	List<Album> findByYear(Integer year, Pageable pageable);
 }

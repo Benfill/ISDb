@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(SearchTypeException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ExceptionMessage resourceNotFoundExceptionHandler(SearchTypeException exception) {
+	public ExceptionMessage searchTypeExceptionHandler(SearchTypeException exception) {
 		ExceptionMessage message = ExceptionMessage.builder().error(HttpStatus.BAD_REQUEST.toString())
 				.message(exception.getMessage()).status(HttpStatus.BAD_REQUEST.value()).time(LocalDate.now()).build();
 		return message;
@@ -28,7 +28,15 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ExceptionMessage resourceNotFoundExceptionHandler(IllegalArgumentException exception) {
+	public ExceptionMessage illegalArgumentExceptionHandler(IllegalArgumentException exception) {
+		ExceptionMessage message = ExceptionMessage.builder().error(HttpStatus.BAD_REQUEST.toString())
+				.message(exception.getMessage()).status(HttpStatus.BAD_REQUEST.value()).time(LocalDate.now()).build();
+		return message;
+	}
+
+	@ExceptionHandler(ResourceValidationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionMessage ResourceValidationExceptionHandler(ResourceValidationException exception) {
 		ExceptionMessage message = ExceptionMessage.builder().error(HttpStatus.BAD_REQUEST.toString())
 				.message(exception.getMessage()).status(HttpStatus.BAD_REQUEST.value()).time(LocalDate.now()).build();
 		return message;
