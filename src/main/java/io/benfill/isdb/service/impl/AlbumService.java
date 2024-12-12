@@ -64,8 +64,8 @@ public class AlbumService implements IAlbumService {
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
+		Album album = getById(id);
+		repository.delete(album);
 	}
 
 	@Override
