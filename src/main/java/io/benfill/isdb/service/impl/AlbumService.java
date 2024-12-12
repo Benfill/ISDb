@@ -46,8 +46,8 @@ public class AlbumService implements IAlbumService {
 
 	@Override
 	public AlbumDtoResp create(AlbumDtoReq dto) {
-		// TODO Auto-generated method stub
-		return null;
+		Album album = mapper.DtoToentity(dto);
+		return mapper.entityToDto(repository.save(album));
 	}
 
 	@Override

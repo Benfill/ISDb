@@ -1,5 +1,7 @@
 package io.benfill.isdb.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +36,12 @@ public class AlbumController {
 	}
 
 	@PostMapping("/admin/albums")
-	public ResponseEntity<?> store(@RequestBody AlbumDtoReq dto) {
+	public ResponseEntity<?> store(@RequestBody @Valid AlbumDtoReq dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
 	}
 
 	@PutMapping("/admin/albums/{id}")
-	public ResponseEntity<?> update(@RequestBody AlbumDtoReq dto, @PathVariable Long id) {
+	public ResponseEntity<?> update(@RequestBody @Valid AlbumDtoReq dto, @PathVariable Long id) {
 		return ResponseEntity.ok(service.update(dto, id));
 	}
 
