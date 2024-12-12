@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import io.benfill.isdb.model.Song;
 
 @Repository
-public interface SongRepository extends MongoRepository<Song, Long> {
+public interface SongRepository extends MongoRepository<Song, String> {
 	List<Song> findByTitleLike(String title, Pageable pageable);
 
 }
