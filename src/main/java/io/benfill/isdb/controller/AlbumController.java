@@ -32,7 +32,7 @@ public class AlbumController {
 
 	@GetMapping("/user/albums/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
-		return ResponseEntity.ok(service.getById(id));
+		return ResponseEntity.ok(service.getDetails(id));
 	}
 
 	@PostMapping("/admin/albums")
