@@ -1,0 +1,80 @@
+package io.benfill.isdb.service.impl;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import io.benfill.isdb.dto.request.LoginDto;
+import io.benfill.isdb.dto.request.UserDtoReq;
+import io.benfill.isdb.dto.response.UserDtoResp;
+import io.benfill.isdb.exception.CustomDuplicateKeyException;
+import io.benfill.isdb.exception.ResourceNotFoundException;
+import io.benfill.isdb.mapper.UserMapper;
+import io.benfill.isdb.model.AuthToken;
+import io.benfill.isdb.model.Role;
+import io.benfill.isdb.model.RoleEnum;
+import io.benfill.isdb.model.User;
+import io.benfill.isdb.repository.RoleRepository;
+import io.benfill.isdb.repository.UserRepository;
+import io.benfill.isdb.security.jwt.TokenProvider;
+import io.benfill.isdb.security.services.UserDetailsServiceImpl;
+import io.benfill.isdb.service.IAuthService;
+
+@Service
+public class AuthService implements IAuthService {
+
+	@Autowired
+	private UserRepository userRepo;
+	@Autowired
+	private TokenProvider jwtUtil;
+	@Autowired
+	private AuthenticationManager authManager;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserDetailsServiceImpl userDetailsService;
+
+	@Autowired
+	private UserMapper mapper;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Override
+	public UserDtoResp registerHandler(UserDtoReq dto) {
+
+		Optional<User> existingUser = userRepo.findByUsername(dto.getUsername());
+
+		if (existingUser.isPresent()) {
+			throw new CustomDuplicateKeyException();
+		}
+
+		String encodedPass = passwordEncoder.encode(dto.getPassword());
+
+		User user = mapper.DtoToentity(dto);
+		user.setPassword(encodedPass);
+
+		// Add default USER role
+		Set<Role> roles = new HashSet<>();
+		Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
+				.orElseThrow(() -> new RuntimeException("Default role not found"));
+		roles.add(userRole);
+		user.setRoles(roles);
+		user.setEnable(true);
+
+		user = userRepo.save(user);
+
+		return mapper.entityToDto(user);
+	}
+
