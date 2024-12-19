@@ -78,3 +78,23 @@ public class AuthService implements IAuthService {
 		return mapper.entityToDto(user);
 	}
 
+	@Override
+	public AuthToken loginHandler(LoginDto body) {
+		Authentication authentication = authManager
+				.authenticate(new UsernamePasswordAuthenticationToken(body.getUsername(), body.getPassword()));
+
+		User savedUser = userRepo.findByUsername(body.getUsername())
+				.orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+
+		org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(
+				savedUser.getUsername(), savedUser.getPassword(), savedUser.getRoles().stream()
+						.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String token = jwtUtil.generateToken(userDetails);
+
+		return AuthToken.builder().name(savedUser.getName()).username(savedUser.getUsername())
+				.roles(savedUser.getRoles()).token(token).build();
+	}
+
+}
