@@ -1,6 +1,7 @@
 package io.benfill.isdb.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,9 @@ import io.benfill.isdb.exception.ResourceValidationException;
 import io.benfill.isdb.exception.SearchTypeException;
 import io.benfill.isdb.mapper.AlbumMapper;
 import io.benfill.isdb.model.Album;
+import io.benfill.isdb.model.Song;
 import io.benfill.isdb.repository.AlbumRepository;
+import io.benfill.isdb.repository.SongRepository;
 import io.benfill.isdb.service.IAlbumService;
 
 @Service
@@ -22,6 +25,9 @@ public class AlbumService implements IAlbumService {
 
 	@Autowired
 	private AlbumRepository repository;
+
+	@Autowired
+	private SongRepository songRepository;
 
 	@Autowired
 	private AlbumMapper mapper;
@@ -36,12 +42,21 @@ public class AlbumService implements IAlbumService {
 		int size = 3;
 		Pageable pageable = PageRequest.of(page, size);
 		List<Album> albums = repository.findAll(pageable).getContent();
+
+		albums.stream().map(a -> {
+			List<Song> songs = songRepository.findByAlbumId(a.getId());
+			a.setSongs(songs);
+			return a;
+		}).collect(Collectors.toList());
 		return mapper.entitiesToDtos(albums);
 	}
 
 	@Override
 	public AlbumDtoResp getDetails(String id) {
-		return mapper.entityToDto(getById(id));
+		Album a = getById(id);
+		List<Song> songs = songRepository.findByAlbumId(a.getId());
+		a.setSongs(songs);
+		return mapper.entityToDto(a);
 	}
 
 	@Override
@@ -85,6 +100,12 @@ public class AlbumService implements IAlbumService {
 			throw new SearchTypeException("type is incorrect");
 		}
 
+		albums.stream().map(a -> {
+			List<Song> songs = songRepository.findByAlbumId(a.getId());
+			a.setSongs(songs);
+			return a;
+		}).collect(Collectors.toList());
+
 		return mapper.entitiesToDtos(albums);
 	}
 
@@ -99,6 +120,12 @@ public class AlbumService implements IAlbumService {
 		if (albums.isEmpty()) {
 			throw new ResourceValidationException("There is no data related to this year: " + year);
 		}
+
+		albums.stream().map(a -> {
+			List<Song> songs = songRepository.findByAlbumId(a.getId());
+			a.setSongs(songs);
+			return a;
+		}).collect(Collectors.toList());
 		return mapper.entitiesToDtos(albums);
 	}
 
