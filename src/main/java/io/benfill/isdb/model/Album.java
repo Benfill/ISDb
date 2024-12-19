@@ -13,20 +13,18 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document
+@Document("albums")
 @Getter
 @Setter
 @Builder
 public class Album {
 
 	@Id
-	private String ID;
+	private String id;
 
 	@NotBlank(message = "Album's title is required")
 	@NotNull(message = "Album's title is required")
@@ -42,8 +40,7 @@ public class Album {
 	@Field()
 	private Integer year;
 
-	@JsonManagedReference
-	@DBRef
+	@DBRef(lazy = false)
 	private List<Song> songs;
 
 	@CreatedDate
@@ -51,5 +48,4 @@ public class Album {
 
 	@LastModifiedDate
 	private LocalDateTime updatedAt;
-
 }

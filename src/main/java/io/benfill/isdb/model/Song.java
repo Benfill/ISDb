@@ -18,13 +18,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document
+@Document("songs")
 @Getter
 @Setter
 @Builder
 public class Song {
 	@Id
-	private String ID;
+	private String id;
 
 	@NotBlank(message = "Song's title is required")
 	@NotNull(message = "Song's title is required")
@@ -40,7 +40,6 @@ public class Song {
 	private Integer number;
 
 	@JsonBackReference
-	@Field()
 	@DBRef
 	private Album album;
 

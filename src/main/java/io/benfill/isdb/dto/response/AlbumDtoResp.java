@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class AlbumDtoResp {
-	private String Id;
+	private String id;
 
 	private String title;
 
